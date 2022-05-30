@@ -36,8 +36,8 @@
         </nav>
         <main>
         <div style="margin-top: 50px; margin-left: 500px; margin-right: 500px;">
-            <form class="input-group" action="/classify">
-                <input class="form-control py-2 border-right-0 border" type="search" placeholder="Search">
+            <form class="input-group" action="/classify" method="POST">
+                <input class="form-control py-2 border-right-0 border" name="text" id="text" type="search" placeholder="Search">
                 <div class="input-group-append">
                     <div class="input-group-text" id="btnGroupAddon2"><i class="fa fa-search"></i></div>
                 </div>
@@ -47,6 +47,11 @@
                  </div>
             </form>
         </div>
+        {%if b64_image %}
+        <div style="justify-content: center; align-items: center; ">
+            <img src = "{{b64_image}}" alt="image of twitter sentiment" height="400px" class="center" style="margin-top: 30px; margin-bottom: 30px;"/>
+        </div>
+        {% endif %}
         </main>
 
         <footer>

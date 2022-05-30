@@ -274,3 +274,11 @@ Container
     color: var(--clr-white);
     background: var(--clr-black);
 }
+
+/*IMAGE */
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 35%;
+}
