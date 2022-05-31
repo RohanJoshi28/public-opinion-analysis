@@ -34,26 +34,17 @@
                 </ul>
             </div>
         </nav>
-        <main>
-        <div style="margin-top: 50px; margin-left: 500px; margin-right: 500px;">
-            <form class="input-group" action="/classify" method="POST">
-                <input class="form-control py-2 border-right-0 border" name="text" id="text" type="search" placeholder="Search">
-                <div class="input-group-append">
-                    <div class="input-group-text" id="btnGroupAddon2"><i class="fa fa-search"></i></div>
+        <main style="margin-top: 60px;">
+        <div style="text-align: center; justify-content: center; align-items: center;">
+            <h2>Financial Analysis of various stocks</h2>
+            {% for figure in figure_list %}
+                <div style="margin: 30px; display: inline-block;">
+                <h4>{{figure}}</h4>
+                <img src="{{base_64_dict[figure]}}" alt="image of twitter sentiment" height="250px" width="350px" class="center" style="margin-top: 30px; margin-bottom: 30px;"/>
                 </div>
-                <div class="container">
-                    <div id="results"></div>
-                    <button class="btn btn-hero" id="btn" type="submit">view results</button>
-                 </div>
-            </form>
+            {% endfor %}
         </div>
-        {%if b64_image %}
-        <div style="justify-content: center; align-items: center; ">
-            <img src = "{{b64_image}}" alt="image of twitter sentiment" height="400px" class="center" style="margin-top: 30px; margin-bottom: 30px;"/>
-        </div>
-        {% endif %}
         </main>
-
         <footer>
             <div class="footer-center">
                 <h4>© 2022 Public Opinion Analysis </h4>
@@ -67,7 +58,5 @@
                 </ul>
             </div>
         </footer>
-        <!-- javascript -->
-        <script src="scripts/app.js"></script>
     </body>
 </html>
