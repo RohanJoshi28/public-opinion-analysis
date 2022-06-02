@@ -7,7 +7,7 @@
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-        <title>Public Opinion Analysis</title>
+        <title>About</title>
 
         <!-- styles -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
@@ -34,17 +34,12 @@
                 </ul>
             </div>
         </nav>
-        <main style="margin-top: 60px;">
-        <div style="text-align: center; justify-content: center; align-items: center;">
-            <h2>Financial Analysis of various stocks</h2>
-            {% for figure in figure_list %}
-                <div style="margin: 30px; display: inline-block;">
-                <h4>{{figure}}</h4>
-                <img src="{{base_64_dict[figure]}}" alt="image of twitter sentiment" height="250px" width="350px" class="center" style="margin-top: 30px; margin-bottom: 30px;"/>
-                </div>
-            {% endfor %}
-        </div>
+        <main>
+            <div class="container">
+                <p>About...</p>
+             </div>
         </main>
+
         <footer>
             <div class="footer-center">
                 <h4>© 2022 Public Opinion Analysis </h4>
@@ -58,5 +53,7 @@
                 </ul>
             </div>
         </footer>
+        <!-- javascript -->
+        <script src="scripts/app.js"></script>
     </body>
 </html>

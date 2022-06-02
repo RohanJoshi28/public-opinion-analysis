@@ -40,6 +40,8 @@ politicians_list = ["Biden", "Trump", "Nancy Pelosi", "Kamala Harris", "Bernie S
 
 finance_list = ["Gamestop stock", "AMC stock", "Google stock", "Tesla stock", "Facebook stock", "Amazon stock", "Apple stock", "Microsoft stock"]
 
+entertainment_list = ["todo"]
+
 class Sentiment(db.Model):
     date = db.Column(db.Date, primary_key=True)
     name = db.Column(db.String(32), primary_key=True)
@@ -71,7 +73,7 @@ def get_start_and_end_days(today):
     return start, end
 
 def save_sentiment_data():
-    figures = politicians_list+finance_list
+    figures = politicians_list+finance_list+entertainment_list
     past_datetimes = get_previous_days(5)
     for p_datetime in past_datetimes:
         if p_datetime.date() == datetime.datetime.now(eastern).date():
@@ -193,6 +195,22 @@ def politics():
     
     return render_template("politicians.html", base_64_dict=base_64_dict, figure_list=politicians_list)
 
+@app.route('/entertainment')
+def entertainment():
+    base_64_dict = {}
+    for ent in entertainment_list:
+        stock_sentiments = Sentiment.query.filter_by(name=ent)
+        date_list = []
+        ratio_list = []
+        for sentiment in stock_sentiments:
+            date_list.append(sentiment.date)
+            ratio_list.append(sentiment.sentiment_ratio)
+        
+        image_string = get_image_string(date_list, ratio_list)
+        base_64_dict[ent] = image_string
+
+    
+    return render_template("entertainment.html", base_64_dict=base_64_dict, figure_list=entertainment_list)
 if __name__=="__main__":
     global p
     p = Process(target=save_sentiment_data_process, args=())
