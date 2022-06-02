@@ -40,7 +40,7 @@ politicians_list = ["Biden", "Trump", "Nancy Pelosi", "Kamala Harris", "Bernie S
 
 finance_list = ["Gamestop stock", "AMC stock", "Google stock", "Tesla stock", "Facebook stock", "Amazon stock", "Apple stock", "Microsoft stock"]
 
-entertainment_list = ["todo"]
+entertainment_list = ["Movies", "ESPN", "CNN", "Fox News", "MSNBC", "Disney Plus", "Netflix", "Marvel"]
 
 class Sentiment(db.Model):
     date = db.Column(db.Date, primary_key=True)
