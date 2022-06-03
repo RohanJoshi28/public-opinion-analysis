@@ -244,12 +244,12 @@ Container
     height: 100%;
     width: 100%;
 }
-.container h2 {
-    background: var(--clr-black);
-    color: var(--clr-white);
-    padding: 1rem;
-    border-radius: var(--radius);
-    margin-bottom: 2.5rem;
+.about {
+    margin: auto;
+    text-align: center;
+    margin-top: 60px;
+    height: 100%;
+    width: 60%;
 }
 .color {
     color: var(--clr-primary-5);

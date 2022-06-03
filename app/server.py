@@ -161,6 +161,11 @@ def get_image_string(date_list, ratio_list):
     image_string = "data:image/png;base64," + base64_image
     return image_string
 
+
+@app.route('/about')
+def about():
+    return render_template("about.html")
+
 @app.route('/finance')
 def finance():
     base_64_dict = {}
