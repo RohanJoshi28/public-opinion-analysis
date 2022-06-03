@@ -36,9 +36,9 @@ db = SQLAlchemy(app)
 bearer_token = os.getenv("BEARER_TOKEN")
 client = tweepy.Client(bearer_token=bearer_token)
 
-politicians_list = ["Biden", "Trump", "Nancy Pelosi", "Kamala Harris", "Bernie Sanders", "AOC", "Ben Carson", "Marco Rubio"]
+politicians_list = ["Joe Biden", "Donald Trump", "Nancy Pelosi", "Kamala Harris", "Bernie Sanders", "AOC", "Ben Carson", "Marco Rubio"]
 
-finance_list = ["Gamestop stock", "AMC stock", "Google stock", "Tesla stock", "Facebook stock", "Amazon stock", "Apple stock", "Microsoft stock"]
+finance_list = ["GME", "AMC", "GOOGL", "TSLA", "FB", "AMZN", "AAPL", "MSFT"]
 
 class Sentiment(db.Model):
     date = db.Column(db.Date, primary_key=True)
