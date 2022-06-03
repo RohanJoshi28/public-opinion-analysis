@@ -134,8 +134,8 @@ def get_sentiment_ratio(query):
     for i in range(5, 0, -1):
         start_time=datetime.datetime.now(eastern)-datetime.timedelta(hours=24*i)
         end_time=datetime.datetime.now(eastern)-datetime.timedelta(hours=24*(i-1)+1)
-        postiive_ratio = get_ratio_given_times(start_time, end_time, query, 10)
-        positive_ratios.append(postiive_ratio)
+        positive_ratio = get_ratio_given_times(start_time, end_time, query, 10)
+        positive_ratios.append(positive_ratio)
 
     return positive_ratios
 
