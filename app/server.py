@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, flash
 from flask_sqlalchemy import SQLAlchemy
 
 import tweepy
@@ -25,9 +25,12 @@ import base64
 from multiprocessing import Process 
 import time
 
+
+
 load_dotenv()
 
 app = Flask(__name__)
+app.secret_key = "6310e994bb51a61d81c676ee"
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///site.db"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -96,27 +99,34 @@ def save_sentiment_data_process():
 @app.route("/classify", methods=["GET", "POST"])
 def classify_text():
     if request.method=="POST":
+        
+        
         text = request.form.get('text')
-        sentiment_ratio = get_sentiment_ratio(text)
+        
+        if not text == "":
+            
+            sentiment_ratio = get_sentiment_ratio(text)
 
-        plt.clf()
+            plt.clf()
 
-        dates = get_previous_days(5)
-        plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%m/%d/%Y'))
-        sns.lineplot(x=dates, y=sentiment_ratio)
-        plt.xticks(dates)
-        plt.gcf().autofmt_xdate()
+            dates = get_previous_days(5)
+            plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%m/%d/%Y'))
+            sns.lineplot(x=dates, y=sentiment_ratio)
+            plt.xticks(dates)
+            plt.gcf().autofmt_xdate()
 
-        plt.xlabel("Dates")
-        plt.ylabel("Sentiment ratio (positive:negative)")
+            plt.xlabel("Dates")
+            plt.ylabel("Sentiment ratio (positive:negative)")
 
-        my_stringIObytes = io.BytesIO()
-        plt.savefig(my_stringIObytes, format='png')
-        my_stringIObytes.seek(0)
-        base64_image = base64.b64encode(my_stringIObytes.read()).decode("ascii")
-        image_string = "data:image/png;base64," + base64_image
-        return render_template("index.html", b64_image=image_string)
-
+            my_stringIObytes = io.BytesIO()
+            plt.savefig(my_stringIObytes, format='png')
+            my_stringIObytes.seek(0)
+            base64_image = base64.b64encode(my_stringIObytes.read()).decode("ascii")
+            image_string = "data:image/png;base64," + base64_image
+            return render_template("index.html", b64_image=image_string)
+        
+    # flash('Please enter in a search!')
+    return render_template("index.html")
 def get_ratio_given_times(start_time, end_time, query, max_results=10):
     tweets = client.search_recent_tweets(query=query, max_results=max_results, start_time=start_time, end_time=end_time)
     sentiment = np.array([1,1,1])
