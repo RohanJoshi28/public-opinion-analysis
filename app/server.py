@@ -102,10 +102,11 @@ def classify_text():
         
         
         text = request.form.get('text')
-        
+        num_tweets = int(request.form["myRange"])
+
         if not text == "":
             
-            sentiment_ratio = get_sentiment_ratio(text)
+            sentiment_ratio = get_sentiment_ratio(text, num_tweets)
 
             plt.clf()
 
@@ -130,21 +131,20 @@ def classify_text():
 def get_ratio_given_times(start_time, end_time, query, max_results=10):
     tweets = client.search_recent_tweets(query=query, max_results=max_results, start_time=start_time, end_time=end_time)
     sentiment = np.array([1,1,1])
-    for tweet in tweets:
-        for t in tweet:
-            if "text" not in t:
-                continue
-            label = pipe(t.text)
-            label_int = int(label[0]["label"][-1])
-            sentiment[label_int]+=1
-    return sentiment[0]/sentiment[2]
+    #the 0th index of the tweets is where all the tweets are at, the other parts are just metadata
+    for tweet in tweets[0]:
+        label = pipe(tweet.text)
+        label_int = int(label[0]["label"][-1])
+        sentiment[label_int]+=1
+    print(sentiment)
+    return sentiment[2]/sentiment[0]
 
-def get_sentiment_ratio(query):
+def get_sentiment_ratio(query, num_tweets=10):
     positive_ratios = []
     for i in range(5, 0, -1):
         start_time=datetime.datetime.now(eastern)-datetime.timedelta(hours=24*i)
         end_time=datetime.datetime.now(eastern)-datetime.timedelta(hours=24*(i-1)+1)
-        positive_ratio = get_ratio_given_times(start_time, end_time, query, 10)
+        positive_ratio = get_ratio_given_times(start_time, end_time, query, num_tweets)
         positive_ratios.append(positive_ratio)
 
     return positive_ratios

@@ -43,16 +43,23 @@
                 <div class="input-group-append">
                     <div class="input-group-text" id="btnGroupAddon2"><i class="fa fa-search"></i></div>
                 </div>
+                <div class="slidecontainer" style="margin-top: 30px">
+                    <input type="range" min="10" max="100" value="10" class="slider" id="myRange" name="myRange">
+                </div></br>
+                <div>
+                    <p id="accuracy-field">Accuracy: 10 tweets analyzed</p>
+                </div>
                 <div class="container">
                     <div id="results"></div>
                     <button class="btn btn-hero" id="btn" type="submit">view results</button>
-                 </div>
+                    </div>            
             </form>
         </div>
         {%if b64_image %}
         <div style="justify-content: center; align-items: center; ">
             <img src = "{{b64_image}}" alt="image of twitter sentiment" height="400px" class="center" style="margin-top: 30px; margin-bottom: 30px;"/>
         </div>
+        
         {% endif %}
         </main>
 
@@ -71,5 +78,15 @@
         </footer>
         <!-- javascript -->
         <script src="scripts/app.js"></script>
+        <script>
+            var slider = document.getElementById("myRange");
+            var output = document.getElementById("accuracy-field");
+            output.innerHTML = `Accuracy: ${slider.value} tweets analyzed`;
+            
+            slider.oninput = function() {
+              output.innerHTML = `Accuracy: ${this.value} tweets analysis`
+            }
+
+        </script>
     </body>
 </html>
