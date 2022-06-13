@@ -39,6 +39,16 @@ db = SQLAlchemy(app)
 bearer_token = os.getenv("BEARER_TOKEN")
 client = tweepy.Client(bearer_token=bearer_token)
 
+api_key = os.getenv("API_KEY")
+api_key_secret = os.getenv("API_KEY_SECRET")
+access_token = os.getenv("ACCESS_TOKEN")
+access_token_secret = os.getenv("ACCESS_TOKEN_SECRET")
+
+auth = tweepy.OAuthHandler(api_key, api_key_secret)
+auth.set_access_token(access_token, access_token_secret)
+
+api = tweepy.API(auth)
+
 politicians_list = ["Democratic Party", "Republican Party", "Joe Biden", "Donald Trump", "Nancy Pelosi", "Kamala Harris", "Bernie Sanders", "AOC", "Marco Rubio"]
 
 finance_list = ["GME", "AMC", "GOOGL", "TSLA", "FB", "AMZN", "AAPL", "MSFT"]
@@ -128,11 +138,15 @@ def classify_text():
         
     # flash('Please enter in a search!')
     return render_template("index.html")
+
 def get_ratio_given_times(start_time, end_time, query, max_results=10):
-    tweets = client.search_recent_tweets(query=query, max_results=max_results, start_time=start_time, end_time=end_time)
+
+    start_id = client.search_recent_tweets(query="hello", start_time=start_time, end_time=start_time + datetime.timedelta(seconds=100))
+    start_id = start_id.meta['oldest_id']
+    tweets = api.search_tweets(q=query, until=end_time.strftime('%Y-%m-%d'), since_id=start_id, count=str(max_results), result_type="popular")
     sentiment = np.array([1,1,1])
     #the 0th index of the tweets is where all the tweets are at, the other parts are just metadata
-    for tweet in tweets[0]:
+    for tweet in tweets:
         label = pipe(tweet.text)
         label_int = int(label[0]["label"][-1])
         sentiment[label_int]+=1
