@@ -202,7 +202,7 @@ def get_sentiment_ratio(query, num_tweets=10, site="twitter"):
 
 @app.route('/')
 def home():
-    return render_template("index.html")
+    return render_template("home.html")
 
 def get_image_string(date_list, ratio_list):
     plt.clf()
@@ -222,6 +222,10 @@ def get_image_string(date_list, ratio_list):
     image_string = "data:image/png;base64," + base64_image
     return image_string
 
+
+@app.route('/search')
+def search():
+    return render_template("index.html")
 
 @app.route('/about')
 def about():

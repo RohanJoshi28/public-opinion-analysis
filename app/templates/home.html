@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        <title>Public Opinion Analysis</title>
+        <link rel="icon" type="image/x-icon" href="static/images/favicon5.png">
+        <!-- <link rel="icon" type="image/x-icon" href="static/images/favicon.png"> -->
+
+        <!-- styles -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link rel="stylesheet" href="static/styles/styles.css" /> 
+
+        <style>
+            nav{
+                background: transparent;
+            }
+
+            
+            footer{
+                background:transparent;
+            }
+
+            
+
+            p{
+                color: var(--clr-white);
+            }
+        </style>
+
+
+        
+    </head>
+    <body>
+
+        <div class = "top">
+            <nav>
+                <div class="nav-center">
+                    
+                    <a id="title" href="#">Public Opinion Analysis</a>
+                    
+                    
+                    <ul class="nav-links">
+                        <li>
+                            <a href="/finance">Finance</a>
+                        </li>
+                        <li>
+                            <a href="/politics">Politics</a>
+                        </li>
+                        <li>
+                            <a href="/entertainment">Entertainment</a>
+                        </li>
+                        <li>
+                            <a href="/search">Search</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+            <main>
+            
+           
+                <br>
+                <br>
+                <br>
+            
+
+            <div class="home">
+                <p>Find the public opinion<br>of <strong>any</strong> topic</p>
+            </div>
+    
+            <div style="margin-top: 10px; margin-left: 500px; margin-right: 500px;">
+                <form class="input-group" action="/search">
+                    
+                    <div class="container">
+                        <div id="results"></div>
+                        <button class="btn btn-hero" id="btn" type="submit">Try it Out!</button>
+                        </div>            
+                </form>
+            </div>
+
+            <footer>
+                <div class="footer-center">
+                    <h4>© 2022 Public Opinion Analysis </h4>
+                    <ul class="footer-links">
+                        <li>
+                            <a href="/about">About</a>
+                        </li>
+                        <li>
+                            <a href="https://github.com/RohanJoshi28/public-opinion-analysis">GitHub</a>
+                        </li>
+                    </ul>
+                </div>
+            </footer>
+
+        </div>
+           
+            </main>
+        
+        
+
+            
+        <!-- javascript -->
+        <script src="scripts/app.js"></script>
+        <script>
+            var slider = document.getElementById("myRange");
+            var output = document.getElementById("accuracy-field");
+            output.innerHTML = `Accuracy: ${slider.value} tweets analyzed`;
+            
+            slider.oninput = function() {
+              output.innerHTML = `Accuracy: ${this.value} tweets analysis`
+            }
+
+        </script>
+    </body>
+</html>
