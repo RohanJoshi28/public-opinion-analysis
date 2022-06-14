@@ -181,7 +181,7 @@ def get_ratio_given_times(start_time, end_time, query, max_results=10, site="twi
     else:
         start_id = client.search_recent_tweets(query="hello", start_time=start_time, end_time=start_time + datetime.timedelta(seconds=100))
         start_id = start_id.meta['oldest_id']
-        tweets = api.search_tweets(q=query, until=end_time.strftime('%Y-%m-%d'), since_id=start_id, count=str(max_results), result_type="popular")
+        tweets = api.search_tweets(q=query, until=end_time.strftime('%Y-%m-%d'), since_id=start_id, count=max_results, result_type="popular")
         sentiment = np.array([1,1,1])
         #the 0th index of the tweets is where all the tweets are at, the other parts are just metadata
         for tweet in tweets:
