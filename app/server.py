@@ -1,7 +1,9 @@
 from flask import Flask, request, render_template, flash
 from flask_sqlalchemy import SQLAlchemy
+import requests
 
 import tweepy
+import praw
 
 from transformers import AutoTokenizer
 from transformers import AutoModel
@@ -25,9 +27,15 @@ import base64
 from multiprocessing import Process 
 import time
 
-
-
 load_dotenv()
+
+reddit = praw.Reddit(
+    client_id=os.getenv("CLIENT_ID"),
+    client_secret=os.getenv("CLIENT_SECRET"),
+    password=os.getenv("PASSWORD"),
+    user_agent=os.getenv("USER_AGENT"),
+    username=os.getenv("USERNAME"),
+)
 
 app = Flask(__name__)
 app.secret_key = "6310e994bb51a61d81c676ee"
@@ -116,13 +124,16 @@ def classify_text():
 
         if not text == "":
             
-            sentiment_ratio = get_sentiment_ratio(text, num_tweets)
+            twitter_sentiment_ratio = get_sentiment_ratio(text, num_tweets, site="twitter")
+            reddit_sentiment_ratio = get_sentiment_ratio(text, num_tweets, site="reddit")
 
             plt.clf()
 
             dates = get_previous_days(5)
             plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%m/%d/%Y'))
-            sns.lineplot(x=dates, y=sentiment_ratio)
+            plt.plot(dates, twitter_sentiment_ratio)
+            plt.plot(dates, reddit_sentiment_ratio)
+            plt.legend(labels=["twitter", "reddit"])
             plt.xticks(dates)
             plt.gcf().autofmt_xdate()
 
@@ -139,26 +150,52 @@ def classify_text():
     # flash('Please enter in a search!')
     return render_template("index.html")
 
-def get_ratio_given_times(start_time, end_time, query, max_results=10):
+def get_ratio_given_times(start_time, end_time, query, max_results=10, site="twitter"):
+    if site=="reddit":
+        timestamp1 = int(time.mktime(start_time.timetuple()))
+        timestamp2 = int(time.mktime(end_time.timetuple()))
+        submissions = requests.get(f"https://api.pushshift.io/reddit/submission/search/?after={timestamp1}&before={timestamp2}&sort_type=score&sort=desc&q={query}").json()
+        sentiment = np.array([1,1,1])
+        if len(submissions["data"])<max_results:
+            max_results = len(submissions["data"])
+        for submission in submissions["data"][0:max_results]:
+            label = pipe(submission["title"])
+            label_int = int(label[0]["label"][-1])
+            sentiment[label_int]+=1
+            submission_id = submission["id"]
+            try:
+                num_comments = 0
+                reddit_submission = reddit.submission(submission_id)
+                for comment in reddit_submission:
+                    label = pipe(comment.body)
+                    label_int = int(label[0]["label"][-1])
+                    sentiment[label_int]+=1
+                    num_comments+=1
+                    if num_comments>=5:
+                        break
+            except:
+                continue
+        return sentiment[2]/sentiment[0]
 
-    start_id = client.search_recent_tweets(query="hello", start_time=start_time, end_time=start_time + datetime.timedelta(seconds=100))
-    start_id = start_id.meta['oldest_id']
-    tweets = api.search_tweets(q=query, until=end_time.strftime('%Y-%m-%d'), since_id=start_id, count=str(max_results), result_type="popular")
-    sentiment = np.array([1,1,1])
-    #the 0th index of the tweets is where all the tweets are at, the other parts are just metadata
-    for tweet in tweets:
-        label = pipe(tweet.text)
-        label_int = int(label[0]["label"][-1])
-        sentiment[label_int]+=1
-    print(sentiment)
-    return sentiment[2]/sentiment[0]
 
-def get_sentiment_ratio(query, num_tweets=10):
+    else:
+        start_id = client.search_recent_tweets(query="hello", start_time=start_time, end_time=start_time + datetime.timedelta(seconds=100))
+        start_id = start_id.meta['oldest_id']
+        tweets = api.search_tweets(q=query, until=end_time.strftime('%Y-%m-%d'), since_id=start_id, count=str(max_results), result_type="popular")
+        sentiment = np.array([1,1,1])
+        #the 0th index of the tweets is where all the tweets are at, the other parts are just metadata
+        for tweet in tweets:
+            label = pipe(tweet.text)
+            label_int = int(label[0]["label"][-1])
+            sentiment[label_int]+=1
+        return sentiment[2]/sentiment[0]
+
+def get_sentiment_ratio(query, num_tweets=10, site="twitter"):
     positive_ratios = []
     for i in range(5, 0, -1):
         start_time=datetime.datetime.now(eastern)-datetime.timedelta(hours=24*i)
         end_time=datetime.datetime.now(eastern)-datetime.timedelta(hours=24*(i-1)+1)
-        positive_ratio = get_ratio_given_times(start_time, end_time, query, num_tweets)
+        positive_ratio = get_ratio_given_times(start_time, end_time, query, num_tweets, site)
         positive_ratios.append(positive_ratio)
 
     return positive_ratios
