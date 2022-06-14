@@ -267,7 +267,7 @@ footer {
     max-width: var(--fixed-width);
     margin: 0 auto;
     display: flex;
-    align-items: center;
+    align-items: baseline;
     justify-content: space-between;
 }
 .footer-center h4 {
